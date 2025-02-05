@@ -7,9 +7,11 @@ function loadStory() {
         .then(response => response.text())
         .then(data => {
             pages = splitIntoPages(data, wordsPerPage);
-            currentPage = 0;
+            currentPage = getSavedPage();
             displayPage();
             document.querySelector('.scroll-container').style.display = 'block';
+            document.querySelector('.book-cover').style.display = 'none';
+            enterFullScreen();
         })
         .catch(error => console.error('Error loading story:', error));
 }
@@ -28,6 +30,7 @@ function displayPage() {
         document.getElementById('storyContent').textContent = pages[currentPage];
         document.getElementById('prevButton').disabled = currentPage === 0;
         document.getElementById('nextButton').disabled = currentPage === pages.length - 1;
+        savePage(currentPage);
     }
 }
 
@@ -45,11 +48,11 @@ function prevPage() {
     }
 }
 
-function toggleFullScreen() {
+function enterFullScreen() {
     if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-    } else if (document.exitFullscreen) {
-        document.exitFullscreen();
+        document.documentElement.requestFullscreen().catch(err => {
+            console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+        });
     }
 }
 
@@ -62,8 +65,16 @@ function adjustFontSize(size) {
     localStorage.setItem('fontSize', size);
 }
 
+function savePage(page) {
+    localStorage.setItem('lastReadPage', page);
+}
+
+function getSavedPage() {
+    return parseInt(localStorage.getItem('lastReadPage')) || 0;
+}
+
 window.onload = function () {
-    const savedFontSize = localStorage.getItem('fontSize') || 16;
+    const savedFontSize = localStorage.getItem('fontSize') || 18;
     document.getElementById('storyContent').style.fontSize = savedFontSize + 'px';
     document.getElementById('fontSizeSlider').value = savedFontSize;
 };
