@@ -8,7 +8,7 @@ function loadStory() {
         .then(data => {
             pages = splitIntoPages(data, wordsPerPage);
             if (pages.length > 0) {
-                currentPage = getSavedPage();
+                currentPage = 0;
                 displayPage();
                 document.querySelector('.scroll-container').style.display = 'block';
                 document.querySelector('.book-cover').style.display = 'none';
@@ -34,7 +34,6 @@ function displayPage() {
         }
         document.getElementById('prevButton').disabled = currentPage === 0;
         document.getElementById('nextButton').disabled = currentPage === pages.length - 1;
-        savePage(currentPage);
     }
 }
 
@@ -72,14 +71,6 @@ function adjustFontSize(size) {
         storyContent.style.fontSize = size + 'px';
     }
     localStorage.setItem('fontSize', size);
-}
-
-function savePage(page) {
-    localStorage.setItem('lastReadPage', page);
-}
-
-function getSavedPage() {
-    return parseInt(localStorage.getItem('lastReadPage')) || 0;
 }
 
 window.onload = function () {
