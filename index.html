@@ -85,6 +85,12 @@
             background-color: #2e2e2e;
             color: #ffffff;
         }
+        .font-size-control {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
     </style>
     <script>
         let pages = [];
@@ -145,6 +151,17 @@
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
         }
+
+        function adjustFontSize(size) {
+            document.getElementById('storyContent').style.fontSize = size + 'px';
+            localStorage.setItem('fontSize', size);
+        }
+
+        window.onload = function () {
+            const savedFontSize = localStorage.getItem('fontSize') || 16;
+            document.getElementById('storyContent').style.fontSize = savedFontSize + 'px';
+            document.getElementById('fontSizeSlider').value = savedFontSize;
+        }
     </script>
 </head>
 <body>
@@ -157,6 +174,10 @@
     </div>
     <div class="scroll-container">
         <pre id="storyContent"></pre>
+        <div class="font-size-control">
+            <label for="fontSizeSlider">Font Size:</label>
+            <input type="range" id="fontSizeSlider" min="12" max="30" value="16" step="1" oninput="adjustFontSize(this.value)">
+        </div>
         <div class="navigation">
             <button id="prevButton" class="nav-button" onclick="prevPage()">Previous</button>
             <button id="nextButton" class="nav-button" onclick="nextPage()">Next</button>
