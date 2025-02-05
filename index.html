@@ -14,11 +14,12 @@
             align-items: center;
             height: 100vh;
             background-color: #f8f1e5;
+            flex-direction: column;
         }
         .book-cover {
             width: 60%;
             max-width: 600px;
-            height: 80vh;
+            height: 60vh;
             background: linear-gradient(135deg, #a67c52, #5c3b1e);
             color: white;
             display: flex;
@@ -39,12 +40,49 @@
             font-size: 1.2em;
             margin-top: 10px;
         }
+        .read-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #4a2c16;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .scroll-container {
+            display: none;
+            width: 80%;
+            max-width: 800px;
+            height: 70vh;
+            overflow-y: scroll;
+            background: white;
+            padding: 20px;
+            border: 2px solid #4a2c16;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
     </style>
+    <script>
+        function loadStory() {
+            fetch('story.txt')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('storyContent').textContent = data;
+                    document.querySelector('.scroll-container').style.display = 'block';
+                })
+                .catch(error => console.error('Error loading story:', error));
+        }
+    </script>
 </head>
 <body>
     <div class="book-cover">
         <div class="book-title">Welcome to My Novels</div>
         <div class="book-subtitle">Explore my world of stories and adventures</div>
+        <button class="read-button" onclick="loadStory()">Read My Story</button>
+    </div>
+    <div class="scroll-container">
+        <pre id="storyContent"></pre>
     </div>
 </body>
 </html>
