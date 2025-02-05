@@ -55,7 +55,7 @@
             width: 80%;
             max-width: 800px;
             height: 70vh;
-            overflow-y: auto;
+            overflow: hidden;
             background: white;
             padding: 20px;
             border: 2px solid #4a2c16;
@@ -64,17 +64,69 @@
             line-height: 1.6;
             text-align: justify;
             white-space: pre-wrap;
+            position: relative;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .nav-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #4a2c16;
+            color: white;
+            border: none;
+            border-radius: 5px;
         }
     </style>
     <script>
+        let pages = [];
+        let currentPage = 0;
+        const wordsPerPage = 300; 
+
         function loadStory() {
             fetch('story.txt')
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById('storyContent').textContent = data;
+                    pages = splitIntoPages(data, wordsPerPage);
+                    currentPage = 0;
+                    displayPage();
                     document.querySelector('.scroll-container').style.display = 'block';
                 })
                 .catch(error => console.error('Error loading story:', error));
+        }
+
+        function splitIntoPages(text, wordsPerPage) {
+            let words = text.split(/\s+/);
+            let pages = [];
+            for (let i = 0; i < words.length; i += wordsPerPage) {
+                pages.push(words.slice(i, i + wordsPerPage).join(' '));
+            }
+            return pages;
+        }
+
+        function displayPage() {
+            if (pages.length > 0) {
+                document.getElementById('storyContent').textContent = pages[currentPage];
+                document.getElementById('prevButton').disabled = currentPage === 0;
+                document.getElementById('nextButton').disabled = currentPage === pages.length - 1;
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < pages.length - 1) {
+                currentPage++;
+                displayPage();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                displayPage();
+            }
         }
     </script>
 </head>
@@ -86,6 +138,10 @@
     </div>
     <div class="scroll-container">
         <pre id="storyContent"></pre>
+        <div class="navigation">
+            <button id="prevButton" class="nav-button" onclick="prevPage()">Previous</button>
+            <button id="nextButton" class="nav-button" onclick="nextPage()">Next</button>
+        </div>
     </div>
 </body>
 </html>
