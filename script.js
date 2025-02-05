@@ -7,11 +7,12 @@ function loadStory() {
         .then(response => response.text())
         .then(data => {
             pages = splitIntoPages(data, wordsPerPage);
-            currentPage = getSavedPage();
-            displayPage();
-            document.querySelector('.scroll-container').style.display = 'block';
-            document.querySelector('.book-cover').style.display = 'none';
-            enterFullScreen();
+            if (pages.length > 0) {
+                currentPage = getSavedPage();
+                displayPage();
+                document.querySelector('.scroll-container').style.display = 'block';
+                document.querySelector('.book-cover').style.display = 'none';
+            }
         })
         .catch(error => console.error('Error loading story:', error));
 }
@@ -27,7 +28,10 @@ function splitIntoPages(text, wordsPerPage) {
 
 function displayPage() {
     if (pages.length > 0) {
-        document.getElementById('storyContent').textContent = pages[currentPage];
+        let storyContent = document.getElementById('storyContent');
+        if (storyContent) {
+            storyContent.textContent = pages[currentPage];
+        }
         document.getElementById('prevButton').disabled = currentPage === 0;
         document.getElementById('nextButton').disabled = currentPage === pages.length - 1;
         savePage(currentPage);
@@ -48,11 +52,13 @@ function prevPage() {
     }
 }
 
-function enterFullScreen() {
+function toggleFullScreen() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => {
             console.error(`Error attempting to enable full-screen mode: ${err.message}`);
         });
+    } else {
+        document.exitFullscreen();
     }
 }
 
@@ -61,7 +67,10 @@ function toggleDarkMode() {
 }
 
 function adjustFontSize(size) {
-    document.getElementById('storyContent').style.fontSize = size + 'px';
+    let storyContent = document.getElementById('storyContent');
+    if (storyContent) {
+        storyContent.style.fontSize = size + 'px';
+    }
     localStorage.setItem('fontSize', size);
 }
 
@@ -74,7 +83,10 @@ function getSavedPage() {
 }
 
 window.onload = function () {
-    const savedFontSize = localStorage.getItem('fontSize') || 18;
-    document.getElementById('storyContent').style.fontSize = savedFontSize + 'px';
-    document.getElementById('fontSizeSlider').value = savedFontSize;
+    let storyContent = document.getElementById('storyContent');
+    if (storyContent) {
+        const savedFontSize = localStorage.getItem('fontSize') || 18;
+        storyContent.style.fontSize = savedFontSize + 'px';
+        document.getElementById('fontSizeSlider').value = savedFontSize;
+    }
 };
