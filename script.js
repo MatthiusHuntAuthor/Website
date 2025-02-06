@@ -1,30 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const fileInput = document.getElementById("fileInput");
     const bookContent = document.getElementById("bookContent");
     const prevPageBtn = document.getElementById("prevPage");
     const nextPageBtn = document.getElementById("nextPage");
     const toggleDarkModeBtn = document.getElementById("toggleDarkMode");
     const toggleScrollBtn = document.getElementById("toggleScroll");
     const fontSizeSlider = document.getElementById("fontSizeSlider");
-    
+
     let textContent = "";
     let currentPage = 0;
     const wordsPerPage = 250;
     let isDarkMode = false;
     let autoScroll = false;
-    
-    // Handle File Upload
-    fileInput.addEventListener("change", function () {
-        const file = fileInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                textContent = event.target.result.replace(/\n/g, " ");
-                displayPage(currentPage);
-            };
-            reader.readAsText(file);
-        }
-    });
+
+    // Fetch the story.txt file from the repository
+    fetch("story.txt")
+        .then(response => response.text())
+        .then(data => {
+            textContent = data.replace(/\n/g, " ");
+            displayPage(currentPage);
+        })
+        .catch(error => console.error("Error loading the text file:", error));
 
     // Display Text in Page Format
     function displayPage(pageNumber) {
