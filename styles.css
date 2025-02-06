@@ -1,61 +1,53 @@
 body {
-    font-family: 'Georgia', serif;
-    margin: 0;
-    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+.controls {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f8f1e5;
-    flex-direction: column;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
 }
 
-.scroll-container {
-    display: none;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background: white;
-    padding: 40px;
-    border: none;
-    box-shadow: none;
-    line-height: 1.8;
-    text-align: justify;
-    white-space: pre-wrap;
-    position: relative;
-    font-size: 18px;
-    border-radius: 0;
-    max-width: 800px;
-}
-
-.book-cover {
-    display: none;
-}
-
-.navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-}
-
-.nav-button {
-    padding: 12px 25px;
-    font-size: 1em;
+button, input[type="file"] {
+    padding: 10px;
     cursor: pointer;
-    background-color: #4a2c16;
-    color: white;
-    border: none;
-    border-radius: 5px;
+}
+
+.reader {
+    border: 1px solid #ccc;
+    padding: 20px;
+    height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
 }
 
 .dark-mode {
-    background-color: #2e2e2e;
-    color: #ffffff;
+    background-color: #222;
+    color: #f5f5f5;
 }
 
-.font-size-control {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.dark-mode .reader {
+    background-color: #333;
+    color: #fff;
 }
+
+#bookContent {
+    text-align: justify;
+    font-size: 20px;
+    line-height: 1.6;
+}
+
