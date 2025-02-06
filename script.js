@@ -1,83 +1,85 @@
-let pages = [];
-let currentPage = 0;
-const wordsPerPage = 300;
-
-function loadStory() {
-    fetch('story.txt')
-        .then(response => response.text())
-        .then(data => {
-            pages = splitIntoPages(data, wordsPerPage);
-            if (pages.length > 0) {
-                currentPage = 0;
-                displayPage();
-                document.querySelector('.scroll-container').style.display = 'block';
-                document.querySelector('.book-cover').style.display = 'none';
-            }
-        })
-        .catch(error => console.error('Error loading story:', error));
-}
-
-function splitIntoPages(text, wordsPerPage) {
-    let words = text.split(/\s+/);
-    let pages = [];
-    for (let i = 0; i < words.length; i += wordsPerPage) {
-        pages.push(words.slice(i, i + wordsPerPage).join(' '));
-    }
-    return pages;
-}
-
-function displayPage() {
-    if (pages.length > 0) {
-        let storyContent = document.getElementById('storyContent');
-        if (storyContent) {
-            storyContent.textContent = pages[currentPage];
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.getElementById("fileInput");
+    const bookContent = document.getElementById("bookContent");
+    const prevPageBtn = document.getElementById("prevPage");
+    const nextPageBtn = document.getElementById("nextPage");
+    const toggleDarkModeBtn = document.getElementById("toggleDarkMode");
+    const toggleScrollBtn = document.getElementById("toggleScroll");
+    const fontSizeSlider = document.getElementById("fontSizeSlider");
+    
+    let textContent = "";
+    let currentPage = 0;
+    const wordsPerPage = 250;
+    let isDarkMode = false;
+    let autoScroll = false;
+    
+    // Handle File Upload
+    fileInput.addEventListener("change", function () {
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                textContent = event.target.result.replace(/\n/g, " ");
+                displayPage(currentPage);
+            };
+            reader.readAsText(file);
         }
-        document.getElementById('prevButton').disabled = currentPage === 0;
-        document.getElementById('nextButton').disabled = currentPage === pages.length - 1;
-    }
-}
+    });
 
-function nextPage() {
-    if (currentPage < pages.length - 1) {
-        currentPage++;
-        displayPage();
+    // Display Text in Page Format
+    function displayPage(pageNumber) {
+        if (!textContent) return;
+        const words = textContent.split(" ");
+        const start = pageNumber * wordsPerPage;
+        const end = start + wordsPerPage;
+        bookContent.innerHTML = words.slice(start, end).join(" ");
     }
-}
 
-function prevPage() {
-    if (currentPage > 0) {
-        currentPage--;
-        displayPage();
-    }
-}
+    // Pagination
+    prevPageBtn.addEventListener("click", function () {
+        if (currentPage > 0) {
+            currentPage--;
+            displayPage(currentPage);
+        }
+    });
 
-function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-            console.error(`Error attempting to enable full-screen mode: ${err.message}`);
-        });
-    } else {
-        document.exitFullscreen();
-    }
-}
+    nextPageBtn.addEventListener("click", function () {
+        const totalPages = Math.ceil(textContent.split(" ").length / wordsPerPage);
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            displayPage(currentPage);
+        }
+    });
 
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-}
+    // Toggle Dark Mode
+    toggleDarkModeBtn.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+        isDarkMode = !isDarkMode;
+        toggleDarkModeBtn.textContent = isDarkMode ? "Light Mode" : "Dark Mode";
+    });
 
-function adjustFontSize(size) {
-    let storyContent = document.getElementById('storyContent');
-    if (storyContent) {
-        storyContent.style.fontSize = size + 'px';
-    }
-    localStorage.setItem('fontSize', size);
-}
+    // Adjust Font Size
+    fontSizeSlider.addEventListener("input", function () {
+        bookContent.style.fontSize = fontSizeSlider.value + "px";
+    });
 
-window.onload = function () {
-    let storyContent = document.getElementById('storyContent');
-    if (storyContent) {
-        const savedFontSize = localStorage.getItem('fontSize') || 18;
-        storyContent.style.fontSize = savedFontSize + 'px';
-        document.getElementById('fontSizeSlider').value = savedFontSize;
-    }
-};
+    // Auto Scroll
+    let scrollInterval;
+    toggleScrollBtn.addEventListener("click", function () {
+        autoScroll = !autoScroll;
+        toggleScrollBtn.textContent = autoScroll ? "Stop Scroll" : "Auto Scroll";
+
+        if (autoScroll) {
+            scrollInterval = setInterval(() => {
+                bookContent.scrollBy(0, 2);
+                if (bookContent.scrollTop + bookContent.clientHeight >= bookContent.scrollHeight) {
+                    clearInterval(scrollInterval);
+                    autoScroll = false;
+                    toggleScrollBtn.textContent = "Auto Scroll";
+                }
+            }, 50);
+        } else {
+            clearInterval(scrollInterval);
+        }
+    });
+});
