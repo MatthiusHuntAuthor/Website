@@ -20,7 +20,7 @@ body {
     margin-bottom: 10px;
 }
 
-button, input[type="file"] {
+button {
     padding: 10px;
     cursor: pointer;
 }
@@ -50,4 +50,3 @@ button, input[type="file"] {
     font-size: 20px;
     line-height: 1.6;
 }
-
