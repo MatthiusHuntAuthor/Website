@@ -3,28 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Novels</title>
+    <title>Kindle-Like Text Reader</title>
     <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
 </head>
 <body>
-    <div class="book-cover">
-        <div class="book-title">Welcome to My Novels</div>
-        <div class="book-subtitle">Explore my world of stories and adventures</div>
-        <button class="read-button" onclick="loadStory()">Read My Story</button>
-        <button class="fullscreen-button" onclick="toggleFullScreen()">Full Screen</button>
-        <button class="theme-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
-    </div>
-    <div class="scroll-container">
-        <pre id="storyContent"></pre>
-        <div class="font-size-control">
-            <label for="fontSizeSlider">Font Size:</label>
-            <input type="range" id="fontSizeSlider" min="12" max="30" value="16" step="1" oninput="adjustFontSize(this.value)">
+    <div class="container">
+        <div class="controls">
+            <input type="file" id="fileInput" accept=".txt">
+            <button id="prevPage">Previous</button>
+            <button id="nextPage">Next</button>
+            <button id="toggleDarkMode">Dark Mode</button>
+            <button id="toggleScroll">Auto Scroll</button>
+            <label>Font Size:</label>
+            <input type="range" id="fontSizeSlider" min="16" max="36" value="20">
         </div>
-        <div class="navigation">
-            <button id="prevButton" class="nav-button" onclick="prevPage()">Previous</button>
-            <button id="nextButton" class="nav-button" onclick="nextPage()">Next</button>
+        <div class="reader">
+            <div id="bookContent"></div>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
