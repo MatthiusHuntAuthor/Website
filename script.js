@@ -12,14 +12,27 @@ document.addEventListener("DOMContentLoaded", function () {
     let isDarkMode = false;
     let autoScroll = false;
 
-    // Fetch the story.txt file from the repository
-    fetch("story.txt")
-        .then(response => response.text())
-        .then(data => {
-            textContent = data.replace(/\n/g, " ");
-            displayPage(currentPage);
-        })
-        .catch(error => console.error("Error loading the text file:", error));
+    // Function to Fetch and Extract DOCX Content
+    function loadDocx() {
+        fetch("sample-story.docx") // Ensure story.docx is in the root directory
+            .then(response => response.blob()) // Convert response to a Blob
+            .then(blob => {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const arrayBuffer = event.target.result;
+
+                    // Use Mammoth.js to extract text from DOCX
+                    Mammoth.extractRawText({ arrayBuffer: arrayBuffer })
+                        .then(result => {
+                            textContent = result.value.replace(/\n/g, " ");
+                            displayPage(currentPage);
+                        })
+                        .catch(error => console.error("Error parsing DOCX:", error));
+                };
+                reader.readAsArrayBuffer(blob);
+            })
+            .catch(error => console.error("Error fetching DOCX file:", error));
+    }
 
     // Display Text in Page Format
     function displayPage(pageNumber) {
@@ -77,4 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
             clearInterval(scrollInterval);
         }
     });
+
+    // Load DOCX instead of TXT
+    loadDocx();
 });
