@@ -1,26 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kindle-Like DOCX Reader</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script> <!-- DOCX Parser -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matthew Brown - Author</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="controls">
-            <button id="prevPage">Previous</button>
-            <button id="nextPage">Next</button>
-            <button id="toggleDarkMode">Dark Mode</button>
-            <button id="toggleScroll">Auto Scroll</button>
-            <label>Font Size:</label>
-            <input type="range" id="fontSizeSlider" min="16" max="36" value="20">
-        </div>
-        <div class="reader">
-            <div id="bookContent"></div>
-        </div>
-    </div>
-    <script src="script.js"></script>
+  <header>
+    <h1>Matthew Brown</h1>
+    <p>Author of Fantasy & Speculative Fiction</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#books">Books</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="about">
+      <h2>About</h2>
+      <p>I write emotionally grounded fantasy stories with rich world-building, unforgettable characters, and tragic beauty. My work explores power, sacrifice, and the invisible threads that bind us all.</p>
+    </section>
+
+    <section id="books">
+      <h2>Books</h2>
+      <ul>
+        <li><strong>The Tribe of the Fog</strong> – A haunting journey through a fog-covered world. <em>Coming Soon.</em></li>
+        <li><strong>Untitled Aleat Project</strong> – A tale of invisible strings, sacrifice, and rebellion. <em>In Development.</em></li>
+      </ul>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Email me at <a href="mailto:yourname@example.com">yourname@example.com</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Matthew Brown. All rights reserved.</p>
+  </footer>
 </body>
 </html>
